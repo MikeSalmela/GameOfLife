@@ -9,7 +9,7 @@
 class MWindow : public QWidget
 {
 public:
-    MWindow(unsigned w, unsigned h, unsigned t, QWidget *parent = nullptr);
+    MWindow(unsigned w, unsigned h, unsigned t, float r, QWidget *parent = nullptr);
 private:
     std::unique_ptr<StepTimer> timer;
 };

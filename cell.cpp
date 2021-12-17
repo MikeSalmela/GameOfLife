@@ -19,12 +19,20 @@ void Cell::update()
 
 void Cell::checkIfShouldChange()
 {
-    if (!isAlive() && livingNeighbours == 0)
+    if (!isAlive() && livingNeighbours == 0) {
         return;
-    else if (!isAlive() && livingNeighbours == 3)
+    } else if (!isAlive() && livingNeighbours == 3) {
         shouldChange = true;
-    else if (isAlive() && (livingNeighbours <= 1 || livingNeighbours >=4))
+    } else if (isAlive() && (livingNeighbours <= 1 || livingNeighbours >=4)) {
         shouldChange = true;
+    }
+}
+
+void Cell::setAlive()
+{
+    if (!isAlive()) {
+        changeState();
+    }
 }
 
 void Cell::addLivingNeighbor()
@@ -58,9 +66,12 @@ void Cell::mouseReleaseEvent(QMouseEvent *event)
 void Cell::changeState()
 {
     alive = !alive;
-    color = isAlive() ? Qt::green : Qt::red;
     notifyNeighbors();
-    repaint();
+    // For algorithm performance testing without displaying
+    #if NO_UI == 0
+        color = isAlive() ? Qt::green : Qt::red;
+        repaint();
+    #endif
 }
 
 void Cell::notifyNeighbors()

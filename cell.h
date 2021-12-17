@@ -29,6 +29,7 @@ public:
     bool isAlive() const { return alive; }
 
     void checkIfShouldChange();
+    void setAlive();
 
 
     void paintEvent(QPaintEvent *event) override;

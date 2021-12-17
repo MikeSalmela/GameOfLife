@@ -22,6 +22,8 @@ public:
     explicit Grid(size_t m, size_t n, QWidget *parent = nullptr);
     void step();
 
+    void setRandomState(float pAlive);
+
 private:
     //Cell count
     size_t rowCount;
