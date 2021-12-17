@@ -3,13 +3,13 @@
 StepTimer::StepTimer(QPushButton *button, Grid *grid, std::chrono::milliseconds ms) : button(button), grid(grid), ms(ms)
 {
     connect(button, &QPushButton::clicked, this, &StepTimer::onButtonClicked);
-    connect(&timer, &QTimer::timeout, this, &StepTimer::onTime);
+    connect(&timer, &QTimer::timeout, this, &StepTimer::onTimeout);
 }
 
 
 void StepTimer::onButtonClicked()
 {
-    if (running) {
+    if (!running) {
         button->setText("Stop");
         timer.start(ms);
     } else {
@@ -19,7 +19,7 @@ void StepTimer::onButtonClicked()
     running = !running;
 }
 
-void StepTimer::onTime()
+void StepTimer::onTimeout()
 {
     grid->step();
 }

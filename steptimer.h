@@ -27,7 +27,7 @@ private:
     QTimer timer;
     std::chrono::milliseconds ms;
 
-    void onTime();
+    void onTimeout();
 };
 
 #endif // STEPTIMER_H

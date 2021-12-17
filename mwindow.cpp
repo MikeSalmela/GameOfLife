@@ -1,27 +1,34 @@
 #include "mwindow.h"
+#include <QGridLayout>
 #include <QPushButton>
+#include <QSpacerItem>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <memory>
 
-MWindow::MWindow(unsigned w, unsigned h, unsigned t, QWidget *parent) : QWidget(parent)
+MWindow::MWindow(unsigned w, unsigned h, unsigned t, float r, bool notify, QWidget *parent) : QWidget(parent)
 {
-    // New objects deleted by Qt as window is destroyed.
-    Grid *g = new Grid(h, w, this);
-    QWidget *buttonRow = new QWidget(this);
+    // New objects deleted by Qt as this is destroyed.
+    Grid *grid = new Grid(h, w, notify, this);
+    // Magic epsilon
+    if (r > 0.000001) {
+        grid->setRandomState(r);
+    }
     QPushButton *stepButton = new QPushButton("step", this);
-    QPushButton *startButton = new QPushButton("start", this);
+    QPushButton *startButton = new QPushButton("Start", this);
+    QPushButton *exitButton = new QPushButton("Exit", this);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    QHBoxLayout *buttonLayout = new QHBoxLayout(buttonRow);
+    QGridLayout *mainLayout = new QGridLayout(this);
 
-    QObject::connect(stepButton, &QPushButton::clicked, g, &Grid::step);
-    timer = std::make_unique<StepTimer>(startButton, g, std::chrono::milliseconds(t));
+    QObject::connect(stepButton, &QPushButton::clicked, grid, &Grid::step);
+    QObject::connect(exitButton, &QPushButton::clicked, this, &QWidget::close);
 
-    buttonLayout->addWidget(stepButton);
-    buttonLayout->addWidget(startButton);
-    mainLayout->addWidget(g);
-    mainLayout->addWidget(buttonRow);
+    timer = std::make_unique<StepTimer>(startButton, grid, std::chrono::milliseconds(t));
+
+    mainLayout->addWidget(grid, 0, 0, 1, 3, Qt::AlignHCenter);
+    mainLayout->addWidget(stepButton, 1, 0);
+    mainLayout->addWidget(startButton, 1 ,1);
+    mainLayout->addWidget(exitButton, 1 ,2);
 
     setLayout(mainLayout);
 }
