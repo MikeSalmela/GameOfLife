@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription({"Play the game of life. Set grid size with --width=m --height=n"});
+    parser.setApplicationDescription({"Play the game of life. Set grid size with --width=m --height=n and time between steps --time=milliseconds"});
     parser.addHelpOption();
 
     parser.addOption({{"n","width"}, "Set width of board.", "int", "25"});
@@ -24,7 +24,10 @@ int main(int argc, char *argv[])
     }
     if (h <= 0) {
         h = 25;
-    };
+    }
+    if (t < 0) {
+        t = 500;
+    }
 
     MWindow window(w, h, t);
 

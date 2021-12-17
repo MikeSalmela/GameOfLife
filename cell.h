@@ -16,34 +16,40 @@ class Cell : public QWidget
     Q_OBJECT
 
 public:
-    Cell(unsigned i, unsigned j, QWidget *parent = nullptr);
+    Cell(unsigned i, unsigned j,std::vector<std::vector<Cell *>> *cells, QWidget *parent = nullptr);
 
     // Check neighbouring cells and update value of should change
-    void calculateState(const std::vector<std::vector<Cell*>> &cells);
+    void calculateState();
+
     // Change life state if it should change
     void update();
+    void addLivingNeighbor();
+    void removeLivingNeighbor();
 
     bool isAlive() const { return alive; }
 
-    void paintEvent(QPaintEvent *event) override;
+    void checkIfShouldChange();
 
+
+    void paintEvent(QPaintEvent *event) override;
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
 
-    //Private methods
-    unsigned countLiveNeighbors(const std::vector<std::vector<Cell*>> &cells);
     void changeState();
     void setColor();
+    void notifyNeighbors();
 
     //States
     bool alive {false};
     bool shouldChange {false};
     QColor color {Qt::red};
 
-    unsigned pos_i;
-    unsigned pos_j;
+    size_t pos_i;
+    size_t pos_j;
+    const std::vector<std::vector<Cell *>> *cells;
+    char livingNeighbours = 0;
 };
 
 #endif // CELL_H

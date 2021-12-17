@@ -14,7 +14,6 @@
  * \class Grid
  * \brief Contains Cells and handles their layout.
  */
-
 class Grid : public QWidget
 {
     Q_OBJECT
@@ -24,17 +23,13 @@ public:
     void step();
 
 private:
-    //Cell size
-    size_t row_size;
-    size_t column_size;
+    //Cell count
+    size_t rowCount;
+    size_t columnCount;
 
     std::vector<std::vector<Cell*>> cells;
 
     QGridLayout *layout;
-
-    void checkAllCellNeighbours() const;
-    void checkCellRowNeighbours(const std::vector<Cell *> &row) const;
-    void updateCells();
     void setCellSize();
 
 };

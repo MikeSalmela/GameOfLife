@@ -4,25 +4,38 @@
 #include <QDebug>
 #include <math.h>
 
-Cell::Cell(unsigned i, unsigned j, QWidget *parent) :
-    QWidget(parent), pos_i(i), pos_j(j)
+Cell::Cell(unsigned i, unsigned j, std::vector<std::vector<Cell*>> *cells, QWidget *parent) :
+    QWidget(parent), pos_i(i), pos_j(j), cells(cells)
 {
-}
-
-void Cell::calculateState(const std::vector<std::vector<Cell*>> &cells)
-{
-    unsigned neighbours = countLiveNeighbors(cells);
-    if (!isAlive() && neighbours == 3)
-        shouldChange = true;
-    else if (isAlive() && (neighbours <= 1 || neighbours >=4))
-        shouldChange = true;
 }
 
 void Cell::update()
 {
     if (shouldChange) {
         changeState();
-        repaint();
+        shouldChange = false;
+    }
+}
+
+void Cell::checkIfShouldChange()
+{
+    if (!isAlive() && livingNeighbours == 0)
+        return;
+    else if (!isAlive() && livingNeighbours == 3)
+        shouldChange = true;
+    else if (isAlive() && (livingNeighbours <= 1 || livingNeighbours >=4))
+        shouldChange = true;
+}
+
+void Cell::addLivingNeighbor()
+{
+    ++livingNeighbours;
+}
+
+void Cell::removeLivingNeighbor()
+{
+    if (livingNeighbours > 0) {
+        --livingNeighbours;
     }
 }
 
@@ -38,33 +51,38 @@ void Cell::paintEvent(QPaintEvent *event)
 void Cell::mouseReleaseEvent(QMouseEvent *event)
 {
     changeState();
-    repaint();
+    qDebug() << (int)livingNeighbours;
     QWidget::mouseReleaseEvent(event);
-}
-
-unsigned Cell::countLiveNeighbors(const std::vector<std::vector<Cell *>> &cells)
-{
-    unsigned count = 0;
-    size_t i_b = pos_i == 0 ? 0 : pos_i - 1;
-    size_t j_b = pos_j == 0 ? 0 : pos_j - 1;
-
-    size_t i_e = std::min((i_b + 3), cells.size());
-    size_t j_e = std::min((j_b + 3), cells[0].size());
-
-    for (size_t i = i_b; i < i_e; ++i) {
-        for (size_t j = j_b; j < j_e; ++j) {
-            if ((i != pos_i || j != pos_j) && cells[i][j]->isAlive()) {
-                ++count;
-            }
-        }
-    }
-    return count;
 }
 
 void Cell::changeState()
 {
-    alive  = !alive;
+    alive = !alive;
     color = isAlive() ? Qt::green : Qt::red;
-    shouldChange = false;
+    notifyNeighbors();
+    repaint();
+}
+
+void Cell::notifyNeighbors()
+{
+    // Beginning index
+    size_t i_b = (pos_i == 0 ? 0 : pos_i - 1);
+    size_t j_b = (pos_j == 0 ? 0 : pos_j - 1);
+
+    // End index
+    size_t i_e = std::min((pos_i + 2), (*cells).size());
+    size_t j_e = std::min((pos_j + 2), (*cells)[0].size());
+
+    for (size_t i = i_b; i < i_e; ++i) {
+        for (size_t j = j_b; j < j_e; ++j) {
+            if ((i != pos_i || j != pos_j)) {
+                if (isAlive()) {
+                    (*cells)[i][j]->addLivingNeighbor();
+                } else {
+                    (*cells)[i][j]->removeLivingNeighbor();
+                }
+            }
+        }
+    }
 }
 
