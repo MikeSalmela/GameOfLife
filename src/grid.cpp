@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "../include/grid.h"
 #include <QGridLayout>
 #include <QDebug>
 #include <chrono>

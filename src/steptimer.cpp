@@ -1,4 +1,4 @@
-#include "steptimer.h"
+#include "../include/steptimer.h"
 
 StepTimer::StepTimer(QPushButton *button, Grid *grid, std::chrono::milliseconds ms) : button(button), grid(grid), ms(ms)
 {

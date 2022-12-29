@@ -1,0 +1,7 @@
+*.o
+moc*
+GameOfLife
+*.pro.user
+Makefile
+*.stash
+

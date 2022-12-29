@@ -9,17 +9,17 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    cell.cpp \
-    grid.cpp \
-    main.cpp \
-    mwindow.cpp \
-    steptimer.cpp
+    src/cell.cpp \
+    src/grid.cpp \
+    src/main.cpp \
+    src/mwindow.cpp \
+    src/steptimer.cpp
 
 HEADERS += \
-    cell.h \
-    grid.h \
-    mwindow.h \
-    steptimer.h
+    include/cell.h \
+    include/grid.h \
+    include/mwindow.h \
+    include/steptimer.h
 
 DEFINES += NO_UI=0
 # Default rules for deployment.

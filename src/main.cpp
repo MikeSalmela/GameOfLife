@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QCommandLineParser>
-#include "mwindow.h"
+#include "../include/mwindow.h"
 
 int main(int argc, char *argv[])
 {

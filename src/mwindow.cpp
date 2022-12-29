@@ -1,4 +1,4 @@
-#include "mwindow.h"
+#include "../include/mwindow.h"
 #include <QGridLayout>
 #include <QPushButton>
 #include <QSpacerItem>

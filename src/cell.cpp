@@ -1,4 +1,4 @@
-#include "cell.h"
+#include "../include/cell.h"
 #include <QPainter>
 #include <QPaintEvent>
 #include <QDebug>
